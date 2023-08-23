@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.shpp.application.R
 import com.shpp.application.databinding.ActivityMainBinding
 
-class MainActivity: AppCompatActivity()  {
+class MainActivity : AppCompatActivity() {
 
     private val binding: ActivityMainBinding by lazy {
         ActivityMainBinding.inflate(layoutInflater)
@@ -26,26 +26,28 @@ class MainActivity: AppCompatActivity()  {
             R.anim.slide_in_left,
             R.anim.slide_out_right
         )
-
     }
 
     private fun changeTextNameView() {
-        if (intent.getStringExtra(Intent.EXTRA_TEXT) != null) {
-            binding.textName.text = parseEmail(intent.getStringExtra(Intent.EXTRA_TEXT).toString())
+        val email = intent.getStringExtra(Intent.EXTRA_TEXT)
+        if (email != null) {
+            binding.textName.text = parseEmail(email.toString())
         }
     }
 
     private fun parseEmail(stringExtra: String): CharSequence {
 
         // Cuts part text after '@'
-        val fullName: StringBuilder = StringBuilder(stringExtra.substring(0, stringExtra.indexOf("@")))
+        val fullName: StringBuilder =
+            StringBuilder(stringExtra.substring(0, stringExtra.indexOf("@")))
 
         fullName[0] = fullName[0].uppercaseChar()
 
         // Splits name and surname
         if (fullName.indexOf('.') != -1) {
             fullName[fullName.indexOf('.')] = ' '
-            fullName[fullName.indexOf(' ') + 1] = fullName[fullName.indexOf(' ') + 1].uppercaseChar()
+            fullName[fullName.indexOf(' ') + 1] =
+                fullName[fullName.indexOf(' ') + 1].uppercaseChar()
         }
 
         return fullName

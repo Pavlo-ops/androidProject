@@ -35,19 +35,13 @@ class AuthActivity : AppCompatActivity() {
 
 
     private fun autoLogin() {
-        val allMapsFromShared = sharedPreferences.all;
-        if (allMapsFromShared.isNotEmpty()) {
-            binding.editEmail.setText(allMapsFromShared[EMAIL].toString())
-            binding.editPassword.setText(allMapsFromShared[PASSWORD].toString())
-        }
+        binding.editEmail.setText(sharedPreferences.getString(EMAIL, ""))
+        binding.editPassword.setText(sharedPreferences.getString(PASSWORD, ""))
     }
 
     private fun startMainActivity() {
         with(binding) {
-            if (editEmail.error == null && editPassword.error == null
-                && !editEmail.text.isNullOrEmpty() && !editEmail.text.isNullOrEmpty()
-            ) {
-
+            if (isPasswordCorrect(editPassword.text.toString()) && isEmailCorrect(editEmail.text.toString())) {
                 saveAutoLog()
                 val intentToAuth = Intent(this@AuthActivity, MainActivity::class.java)
                 intentToAuth.putExtra(Intent.EXTRA_TEXT, editEmail.text.toString())
@@ -96,12 +90,12 @@ class AuthActivity : AppCompatActivity() {
     }
 
     private fun isPasswordCorrect(password: String): Boolean {
-            val hasNumberAndLetter: Boolean = password.any { it.isDigit() } &&
-                    password.any { it.isUpperCase() } &&
-                    password.any{ it.isLowerCase()}
-            return !(password.length < MIN_LENGTH_PASSWORD || !hasNumberAndLetter)
+        val hasNumberAndLetter: Boolean = password.any { it.isDigit() } &&
+                password.any { it.isUpperCase() } &&
+                password.any { it.isLowerCase() }
+        return !(password.length < MIN_LENGTH_PASSWORD || !hasNumberAndLetter)
     }
 
-    private fun isEmailCorrect(textEmail: String) = Regex("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$").matches(textEmail)
-
+    private fun isEmailCorrect(textEmail: String) =
+        Regex("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$").matches(textEmail)
 }
