@@ -115,16 +115,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/editPassword" />
 
-    <androidx.appcompat.widget.AppCompatImageButton
+    <com.shpp.application.level_1.ButtonGoogleView
         android:id="@+id/buttonGoogle"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:src="@drawable/bc_button"
+        android:layout_height="45dp"
+        android:layout_width="370dp"
+        app:text="Google"
+        app:textSize="8sp"
+        app:textColor="@color/textEditButton"
+        app:fontFamily="@font/opensans_semibold"
+        app:backgroundColor="@color/light"
         app:layout_constraintTop_toBottomOf="@id/checkboxRemember"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:adjustViewBounds="true"
-        android:background="#00FFFFFF"
         android:layout_marginTop="@dimen/normal_margin"
         />
 
