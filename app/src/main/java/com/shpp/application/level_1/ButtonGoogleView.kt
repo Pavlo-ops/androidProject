@@ -37,16 +37,20 @@ class ButtonGoogleView(
     private fun initializedAttributes(attrs: AttributeSet?, defStyleAttr: Int, desStyleRes: Int) {
         if (attrs == null) return
         val typeArray = context.obtainStyledAttributes(attrs, R.styleable.ButtonGoogleView, defStyleAttr, desStyleRes)
+
         binding.labelGoogle.text = typeArray.getText(R.styleable.ButtonGoogleView_text)
         binding.labelGoogle.textSize = typeArray.getDimension(R.styleable.ButtonGoogleView_textSize,
-            12F
+            R.dimen.size_bottom_title.toFloat()
         )
-
         binding.labelGoogle.setTextColor(typeArray.getColor(R.styleable.ButtonGoogleView_textColor, R.color.textEditButton))
 
+        // Sets font-family for label.
         val customFontResourceId = typeArray.getResourceId(R.styleable.ButtonGoogleView_fontFamily, 0)
         binding.labelGoogle.typeface = ResourcesCompat.getFont(context, customFontResourceId)
-        binding.root.setBackgroundColor(typeArray.getColor(R.styleable.ButtonGoogleView_backgroundColor, resources.getColor(R.color.light)))
+
+        val colorBackground = typeArray.getColor(R.styleable.ButtonGoogleView_backgroundColor, resources.getColor(R.color.light))
+        binding.root.setBackgroundColor(colorBackground)
+
         binding.letterG.setImageResource(R.drawable.ic_big_g)
         typeArray.recycle()
     }

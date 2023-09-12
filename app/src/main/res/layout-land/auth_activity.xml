@@ -7,8 +7,6 @@
     android:background="@color/profileBlue"
     tools:ignore="MissingDefaultResource">
 
-
-
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/labelEmail"
         android:layout_width="wrap_content"
@@ -91,21 +89,22 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/editPassword" />
 
-    <androidx.appcompat.widget.AppCompatImageButton
+
+    <com.shpp.application.level_1.ButtonGoogleView
         android:id="@+id/buttonGoogle"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:src="@drawable/bc_button"
+        android:layout_width="@dimen/width_google"
+        android:layout_height="@dimen/height_google"
+        android:layout_marginTop="@dimen/normal_margin"
+        android:layout_marginBottom="@dimen/small_margin"
+        app:backgroundColor="@color/light"
+        app:fontFamily="@font/opensans_semibold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf = "@id/registerButton"
-        android:adjustViewBounds="true"
-        android:background="#00FFFFFF"
-        android:layout_marginBottom="@dimen/normal_margin"
-        android:layout_marginEnd="@dimen/normal_margin"
-        android:layout_marginStart="@dimen/normal_margin"
-        app:layout_constraintHorizontal_chainStyle="packed"
-        />
+        app:text="@string/button_google"
+        app:textColor="@color/textEditButton"
+        app:textSize="@dimen/size_google_button"
+        tools:ignore="SmallSp" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/registerButton"
@@ -169,5 +168,4 @@
         app:layout_constraintStart_toEndOf="@id/labelQuestion"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/labelQuestion" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,6 +6,10 @@ import androidx.appcompat.app.AppCompatActivity
 import com.shpp.application.R
 import com.shpp.application.databinding.ActivityMainBinding
 
+/**
+ * MainActivity.kt
+ * @author Pavlo Kokhanevych
+ */
 class MainActivity : AppCompatActivity() {
 
     private val binding: ActivityMainBinding by lazy {

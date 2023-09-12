@@ -24,5 +24,6 @@
     <string name="text_signIn">Sign in</string>
     <string name="error_email">Incorrect. Check syntax</string>
     <string name="error_password">Unreliable password.Use upper and lower case, digits</string>
+    <string name="button_google" translatable="false">Google</string>
 
 </resources>

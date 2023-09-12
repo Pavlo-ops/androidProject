@@ -16,4 +16,10 @@
     <color name="greyAuth">#BDBDBD</color>
     <color name="colorAccent">#00000000</color>
 
+    <!--Colors for ic_big_g -->
+    <color name="light_blue">#4285F4</color>
+    <color name="light_green">#34A853</color>
+    <color name="light_orange">#FBBC05</color>
+    <color name="light_red">#EB4335</color>
+
 </resources>

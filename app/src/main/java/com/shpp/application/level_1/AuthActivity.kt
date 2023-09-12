@@ -13,6 +13,10 @@ import com.shpp.application.level_1.utils.Constants.MIN_LENGTH_PASSWORD
 import com.shpp.application.level_1.utils.Constants.PASSWORD
 import com.shpp.application.level_1.utils.Constants.SHARED_PREFERENCES
 
+/**
+ * AuthActivity.kt
+ * @author Pavlo Kokhanevych
+ */
 class AuthActivity : AppCompatActivity() {
 
     private val binding: AuthActivityBinding by lazy {
@@ -32,7 +36,6 @@ class AuthActivity : AppCompatActivity() {
         autoLogin()
         binding.registerButton.setOnClickListener { startMainActivity(); }
     }
-
 
     private fun autoLogin() {
         binding.editEmail.setText(sharedPreferences.getString(EMAIL, ""))
