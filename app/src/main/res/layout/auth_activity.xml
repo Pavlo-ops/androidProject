@@ -122,6 +122,7 @@
         app:backgroundColor="@color/light"
         app:fontFamily="@font/opensans_semibold"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.585"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/checkboxRemember"
         app:text="@string/button_google"

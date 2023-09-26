@@ -11,12 +11,12 @@ import com.shpp.application.databinding.ButtonGoogleBinding
 
 
 typealias OnButtonGoogleActionListener = () -> Unit
-class ButtonGoogleView(
+class ButtonGoogleView( //@JvmOverloads
     context: Context,
     attrs: AttributeSet?,
     defStyleAttr: Int,
     defStyleRes: Int
-) : ConstraintLayout(context, attrs, defStyleAttr, defStyleRes) {
+) : ConstraintLayout(context, attrs, defStyleAttr, defStyleRes) {       //todo use View or Button (view is better)
 
     private val binding : ButtonGoogleBinding
 
@@ -36,7 +36,7 @@ class ButtonGoogleView(
     @SuppressLint("ResourceAsColor", "ResourceType")
     private fun initializedAttributes(attrs: AttributeSet?, defStyleAttr: Int, desStyleRes: Int) {
         if (attrs == null) return
-        val typeArray = context.obtainStyledAttributes(attrs, R.styleable.ButtonGoogleView, defStyleAttr, desStyleRes)
+        val typeArray = context.obtainStyledAttributes(attrs, R.styleable.ButtonGoogleView, defStyleAttr, desStyleRes)  //todo R.styleable.ButtonGoogleView -> to constructor
 
         binding.labelGoogle.text = typeArray.getText(R.styleable.ButtonGoogleView_text)
         binding.labelGoogle.textSize = typeArray.getDimension(R.styleable.ButtonGoogleView_textSize,
@@ -48,20 +48,20 @@ class ButtonGoogleView(
         val customFontResourceId = typeArray.getResourceId(R.styleable.ButtonGoogleView_fontFamily, 0)
         binding.labelGoogle.typeface = ResourcesCompat.getFont(context, customFontResourceId)
 
-        val colorBackground = typeArray.getColor(R.styleable.ButtonGoogleView_backgroundColor, resources.getColor(R.color.light))
+        val colorBackground = typeArray.getColor(R.styleable.ButtonGoogleView_backgroundColor, resources.getColor(R.color.light))   //todo deprecated
         binding.root.setBackgroundColor(colorBackground)
 
         binding.letterG.setImageResource(R.drawable.ic_big_g)
         typeArray.recycle()
     }
 
-    fun initListener() {
+    fun initListener() {        //todo not needed, just extend View
         binding.root.setOnClickListener{
             this.listener?.invoke()
         }
     }
 
-    fun setListener(listener: OnButtonGoogleActionListener?) {
+    fun setListener(listener: OnButtonGoogleActionListener?) {   //todo not needed, just extend View
         this.listener = listener
     }
 }
