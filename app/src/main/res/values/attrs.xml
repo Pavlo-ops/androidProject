@@ -2,9 +2,13 @@
 <resources>
     <declare-styleable name="ButtonGoogleView">
         <attr name="text" format="string" />
+        <attr name="width" format="dimension" />
+        <attr name="height" format="dimension" />
         <attr name="textSize" format="dimension" />
         <attr name="backgroundColor" format="color" />
         <attr name="fontFamily" format="string" />
         <attr name="textColor" format="color" />
     </declare-styleable>
+
+    <attr name="style" format="reference" />
 </resources>

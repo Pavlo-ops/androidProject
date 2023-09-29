@@ -2,66 +2,158 @@ package com.shpp.application.level_1
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Canvas
+import android.graphics.Paint
+import android.graphics.Typeface
+import android.graphics.drawable.Drawable
 import android.util.AttributeSet
-import android.view.LayoutInflater
-import androidx.constraintlayout.widget.ConstraintLayout
+import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import com.shpp.application.R
-import com.shpp.application.databinding.ButtonGoogleBinding
+import kotlin.math.min
 
 
-typealias OnButtonGoogleActionListener = () -> Unit
-class ButtonGoogleView( //@JvmOverloads
+class ButtonGoogleView @JvmOverloads constructor(
     context: Context,
-    attrs: AttributeSet?,
-    defStyleAttr: Int,
-    defStyleRes: Int
-) : ConstraintLayout(context, attrs, defStyleAttr, defStyleRes) {       //todo use View or Button (view is better)
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = R.attr.style,
+    defStyleRes: Int = R.style.ButtonGoogleViewStyle
+) : View(
+    context,
+    attrs,
+    defStyleAttr,
+    defStyleRes
+) {
 
-    private val binding : ButtonGoogleBinding
-
-    private var listener: OnButtonGoogleActionListener? = null
-
-    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : this (context, attrs, defStyleAttr, 0)
-    constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
-    constructor(context: Context): this(context, null)
+    private val paintButton: Paint = Paint(Paint.ANTI_ALIAS_FLAG)
+    private var width: Float = 0f
+    private var height: Float = 0f
+    private var logoGoogle: Drawable?
+    private var text: String = ""
+    private var colorBackground: Int = 0
+    private var textSize: Float = 0f
+    private var textColor: Int = 0
+    private var textFontFamily: Typeface? = null
+    private val PADDING_BETWEEN_ICON_TEXT: Int = 30
 
     init {
-        val inflator = LayoutInflater.from(context)
-        inflator.inflate(R.layout.button_google, this, true)
-        binding = ButtonGoogleBinding.bind(this)
+        logoGoogle = ContextCompat.getDrawable(context, R.drawable.ic_big_g)
         initializedAttributes(attrs, defStyleAttr, defStyleRes)
+    }
+
+    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
+
+        val widthSize = MeasureSpec.getSize(widthMeasureSpec)
+        val heightSize = MeasureSpec.getSize(heightMeasureSpec)
+        val widthMode = MeasureSpec.getMode(widthMeasureSpec)
+        val heightMode = MeasureSpec.getMode(heightMeasureSpec)
+
+        val desiredWidth = receiveDesiredWidth(widthMode, widthSize)
+        val desiredHeight = receiveDesiredHeight(heightMode, heightSize)
+
+        setMeasuredDimension(desiredWidth.toInt(), desiredHeight.toInt())
+    }
+
+    private fun receiveDesiredWidth(widthMode: Int, widthSize: Int): Number {
+        return when (widthMode) {
+            MeasureSpec.EXACTLY -> widthSize
+            MeasureSpec.AT_MOST -> min(
+                width,
+                widthSize.toFloat()
+            )
+
+            else -> width
+        }
+    }
+
+    private fun receiveDesiredHeight(heightMode: Int, heightSize: Int): Number {
+        return when (heightMode) {
+            MeasureSpec.EXACTLY -> heightSize
+            MeasureSpec.AT_MOST -> min(
+                height,
+                heightSize.toFloat()
+            )
+
+            else -> height
+        }
+    }
+
+    override fun onDraw(canvas: Canvas?) {
+        super.onDraw(canvas)
+        putBoundsLogoGoogle()
+        canvas?.drawColor(colorBackground)
+        drawText(canvas)
+
+        if (canvas != null) {
+            logoGoogle?.draw(canvas)
+        }
+    }
+
+    private fun putBoundsLogoGoogle() {
+        logoGoogle?.let {
+            val widthLogoAndText =
+                (it.intrinsicWidth + paintButton.measureText(text) + PADDING_BETWEEN_ICON_TEXT)
+            val iconLeft = ((width - widthLogoAndText) / 2).toInt()
+            val iconTop = (height - it.intrinsicHeight) / 2
+            it.setBounds(
+                iconLeft, iconTop.toInt(), iconLeft + it.intrinsicWidth,
+                (iconTop + it.intrinsicHeight).toInt()
+            )
+        }
+    }
+
+    private fun drawText(canvas: Canvas?) {
+        val widthLogoAndText =
+            paintButton.measureText(text) + PADDING_BETWEEN_ICON_TEXT + (logoGoogle?.intrinsicWidth
+                ?: 0)
+        val textX = (width - widthLogoAndText) / 2 + ((logoGoogle?.intrinsicWidth
+            ?: 0) + PADDING_BETWEEN_ICON_TEXT)
+        val textY = ((logoGoogle?.intrinsicHeight ?: textSize).toFloat())
+        paintButton.color = textColor
+        paintButton.textSize = textSize
+        paintButton.typeface = textFontFamily
+        canvas?.drawText(text.uppercase(), textX, textY, paintButton)
     }
 
     @SuppressLint("ResourceAsColor", "ResourceType")
     private fun initializedAttributes(attrs: AttributeSet?, defStyleAttr: Int, desStyleRes: Int) {
         if (attrs == null) return
-        val typeArray = context.obtainStyledAttributes(attrs, R.styleable.ButtonGoogleView, defStyleAttr, desStyleRes)  //todo R.styleable.ButtonGoogleView -> to constructor
+        val typeArray = context.obtainStyledAttributes(
+            attrs,
+            R.styleable.ButtonGoogleView,
+            defStyleAttr,
+            desStyleRes
+        )
 
-        binding.labelGoogle.text = typeArray.getText(R.styleable.ButtonGoogleView_text)
-        binding.labelGoogle.textSize = typeArray.getDimension(R.styleable.ButtonGoogleView_textSize,
+        width = typeArray.getDimension(
+            R.styleable.ButtonGoogleView_width,
+            R.dimen.width_google.toFloat()
+        )
+        height = typeArray.getDimension(
+            R.styleable.ButtonGoogleView_height,
+            R.dimen.height_google.toFloat()
+        )
+
+        text = typeArray.getText(R.styleable.ButtonGoogleView_text).toString()
+        textSize = typeArray.getDimension(
+            R.styleable.ButtonGoogleView_textSize,
             R.dimen.size_bottom_title.toFloat()
         )
-        binding.labelGoogle.setTextColor(typeArray.getColor(R.styleable.ButtonGoogleView_textColor, R.color.textEditButton))
+        textColor =
+            typeArray.getColor(R.styleable.ButtonGoogleView_textColor, R.color.textEditButton)
 
         // Sets font-family for label.
-        val customFontResourceId = typeArray.getResourceId(R.styleable.ButtonGoogleView_fontFamily, 0)
-        binding.labelGoogle.typeface = ResourcesCompat.getFont(context, customFontResourceId)
+        val customFontResourceId =
+            typeArray.getResourceId(R.styleable.ButtonGoogleView_fontFamily, 0)
+        textFontFamily = ResourcesCompat.getFont(context, customFontResourceId)
 
-        val colorBackground = typeArray.getColor(R.styleable.ButtonGoogleView_backgroundColor, resources.getColor(R.color.light))   //todo deprecated
-        binding.root.setBackgroundColor(colorBackground)
+        colorBackground = typeArray.getColor(
+            R.styleable.ButtonGoogleView_backgroundColor,
+            ContextCompat.getColor(context, R.color.light)
+        )
 
-        binding.letterG.setImageResource(R.drawable.ic_big_g)
         typeArray.recycle()
-    }
-
-    fun initListener() {        //todo not needed, just extend View
-        binding.root.setOnClickListener{
-            this.listener?.invoke()
-        }
-    }
-
-    fun setListener(listener: OnButtonGoogleActionListener?) {   //todo not needed, just extend View
-        this.listener = listener
     }
 }

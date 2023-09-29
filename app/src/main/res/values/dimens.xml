@@ -30,6 +30,6 @@
     <dimen name="size_job_text">14sp</dimen>
     <dimen name="size_bottom_title">12sp</dimen>
     <dimen name="size_register_button">16sp</dimen>
-    <dimen name="size_google_button">8sp</dimen>
+    <dimen name="size_google_button">20sp</dimen>
 
 </resources>

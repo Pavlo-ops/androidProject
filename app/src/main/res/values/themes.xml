@@ -13,7 +13,19 @@
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
         <item name="android:windowActivityTransitions">true</item>
+
+        <item name="style" >@style/ButtonGoogleViewStyle</item>
     </style>
 
+    <!-- Themes for google button -->
+    <style name="ButtonGoogleViewStyle">
+        <item name="textSize">@dimen/size_google_button</item>
+        <item name="width">@dimen/width_google</item>
+        <item name="height">@dimen/height_google</item>
+        <item name="backgroundColor">@color/light</item>
+        <item name="textColor">@color/black</item>
+        <item name="fontFamily">@font/opensans_semibold</item>
+        <item name="text">@string/button_google</item>
+    </style>
 
 </resources>

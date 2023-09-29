@@ -119,16 +119,11 @@
         android:layout_width="@dimen/width_google"
         android:layout_height="@dimen/height_google"
         android:layout_marginTop="@dimen/normal_margin"
-        app:backgroundColor="@color/light"
-        app:fontFamily="@font/opensans_semibold"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/registerButton"
         app:layout_constraintHorizontal_bias="0.585"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@id/registerButton"
         app:layout_constraintTop_toBottomOf="@id/checkboxRemember"
-        app:text="@string/button_google"
-        app:textColor="@color/textEditButton"
-        app:textSize="@dimen/size_google_button"
-        tools:ignore="SmallSp" />
+        app:textColor="@color/textEditButton" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/labelOr"
