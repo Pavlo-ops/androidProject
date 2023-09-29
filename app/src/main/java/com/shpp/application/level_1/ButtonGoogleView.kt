@@ -82,9 +82,9 @@ class ButtonGoogleView @JvmOverloads constructor(
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
-        putBoundsLogoGoogle()
         canvas?.drawColor(colorBackground)
         drawText(canvas)
+        putBoundsLogoGoogle()
 
         if (canvas != null) {
             logoGoogle?.draw(canvas)
@@ -105,15 +105,16 @@ class ButtonGoogleView @JvmOverloads constructor(
     }
 
     private fun drawText(canvas: Canvas?) {
-        val widthLogoAndText =
-            paintButton.measureText(text) + PADDING_BETWEEN_ICON_TEXT + (logoGoogle?.intrinsicWidth
-                ?: 0)
-        val textX = (width - widthLogoAndText) / 2 + ((logoGoogle?.intrinsicWidth
-            ?: 0) + PADDING_BETWEEN_ICON_TEXT)
-        val textY = ((logoGoogle?.intrinsicHeight ?: textSize).toFloat())
         paintButton.color = textColor
         paintButton.textSize = textSize
         paintButton.typeface = textFontFamily
+        val widthLogoAndText =
+            paintButton.measureText(text) + PADDING_BETWEEN_ICON_TEXT + (logoGoogle?.intrinsicWidth
+                ?: 0)
+        val textX = ((width - widthLogoAndText) / 2 ) + PADDING_BETWEEN_ICON_TEXT + (logoGoogle?.intrinsicWidth
+                ?: 0)
+        val textY = ((logoGoogle?.intrinsicHeight ?: textSize).toFloat())
+
         canvas?.drawText(text.uppercase(), textX, textY, paintButton)
     }
 
