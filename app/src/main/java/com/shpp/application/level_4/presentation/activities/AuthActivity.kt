@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import androidx.core.app.ActivityOptionsCompat
 import androidx.core.widget.doOnTextChanged
 import com.shpp.application.R
 import com.shpp.application.databinding.AuthActivityBinding
@@ -35,7 +36,7 @@ class AuthActivity : BaseActivity<AuthActivityBinding>(AuthActivityBinding::infl
         binding.registerButton.setOnClickListener { startMainActivity(); }
     }
 
-    private fun autoLogin() {
+    private fun autoLogin() { // TODO: not correctly
         binding.editEmail.setText(sharedPreferences.getString(EMAIL, ""))
         binding.editPassword.setText(sharedPreferences.getString(PASSWORD, ""))
     }
@@ -46,11 +47,15 @@ class AuthActivity : BaseActivity<AuthActivityBinding>(AuthActivityBinding::infl
                 saveAutoLog()
                 App.email = editEmail.text.toString()
                 val intentToAuth = Intent(this@AuthActivity, MainActivity::class.java)
-                startActivity(intentToAuth)
-                overridePendingTransition(
+
+
+                val options = ActivityOptionsCompat.makeCustomAnimation(
+                    this@AuthActivity,
                     R.anim.slide_in_right,
                     R.anim.slide_out_left
                 )
+
+                startActivity(intentToAuth, options.toBundle())
             }
         }
     }
@@ -72,10 +77,10 @@ class AuthActivity : BaseActivity<AuthActivityBinding>(AuthActivityBinding::infl
 
     private fun addEmailListener() {
         binding.editEmail.doOnTextChanged { text, _, _, _ ->
-            if (!isEmailCorrect(text.toString())) {
-                binding.editEmail.error = resources.getString(R.string.error_email)
+            binding.editEmail.error = if (!isEmailCorrect(text.toString())) {
+                getString(R.string.error_email)
             } else {
-                binding.editEmail.error = null
+                null
             }
         }
     }
@@ -90,13 +95,13 @@ class AuthActivity : BaseActivity<AuthActivityBinding>(AuthActivityBinding::infl
         }
     }
 
-    private fun isPasswordCorrect(password: String): Boolean {
+    private fun isPasswordCorrect(password: String): Boolean { // TODO: to view model
         val hasNumberAndLetter: Boolean = password.any { it.isDigit() } &&
                 password.any { it.isUpperCase() } &&
                 password.any { it.isLowerCase() }
         return !(password.length < MIN_LENGTH_PASSWORD || !hasNumberAndLetter)
     }
 
-    private fun isEmailCorrect(textEmail: String) =
+    private fun isEmailCorrect(textEmail: String) = // TODO: to view model
         Regex("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$").matches(textEmail)
 }

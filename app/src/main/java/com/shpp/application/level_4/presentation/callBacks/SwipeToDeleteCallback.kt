@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 class SwipeToDeleteCallback(
     private val onSwiped: (Int) -> Unit = {},
+    private val isEnabled: () -> Boolean
 ) : ItemTouchHelper.SimpleCallback(
     0,
     ItemTouchHelper.LEFT
@@ -21,4 +22,9 @@ class SwipeToDeleteCallback(
         val position = viewHolder.adapterPosition
         onSwiped(position)
     }
+
+    override fun isItemViewSwipeEnabled(): Boolean {
+        return isEnabled()
+    }
+
 }

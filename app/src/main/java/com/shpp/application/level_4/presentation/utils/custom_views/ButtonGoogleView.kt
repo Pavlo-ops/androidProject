@@ -1,4 +1,4 @@
-package com.shpp.application.level_4.presentation.utils.extensions.custom_views
+package com.shpp.application.level_4.presentation.utils.custom_views
 
 import android.annotation.SuppressLint
 import android.content.Context

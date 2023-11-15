@@ -12,10 +12,16 @@ import com.shpp.application.level_4.presentation.utils.extensions.downloadAndPut
 class DetailsContactFragment :
     BaseFragment<FragmentContactDetailsBinding>(FragmentContactDetailsBinding::inflate) {
 
-    private val navigationArgs: DetailsContactFragmentArgs by navArgs()
+    private val args: DetailsContactFragmentArgs by navArgs()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        setSharedElementAnimation()
+
+    }
+
+    private fun setSharedElementAnimation() {
         sharedElementEnterTransition =
             TransitionInflater.from(requireContext()).inflateTransition(R.transition.custom_move)
     }
@@ -26,23 +32,19 @@ class DetailsContactFragment :
     }
 
     override fun setListeners() {
-        binding.buttonBack.setOnClickListener {
-            startViewPagerFragment()
-        }
+        binding.buttonBack.setOnClickListener { startViewPagerFragment() }
     }
 
     private fun fillUserProfile() {
         with(binding) {
-            avatar.downloadAndPutPhoto(navigationArgs.photoAddress)
-            textViewName.text = navigationArgs.name
-            textCareer.text = navigationArgs.career
-            textAddress.text = navigationArgs.address
+            avatar.downloadAndPutPhoto(args.contact.photo)
+            textViewName.text = args.contact.name
+            textCareer.text = args.contact.job
+            textAddress.text = args.contact.address
         }
     }
 
     private fun startViewPagerFragment() {
-        val direction =
-            DetailsContactFragmentDirections.actionDetailsContactFragmentToViewPagerFragment()
-        findNavController().navigate(direction)
+        findNavController().navigateUp()
     }
 }

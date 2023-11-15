@@ -90,7 +90,7 @@
         app:layout_constraintTop_toBottomOf="@id/editPassword" />
 
 
-    <com.shpp.application.level_4.presentation.utils.extensions.custom_views.ButtonGoogleView
+    <com.shpp.application.level_4.presentation.utils.custom_views.ButtonGoogleView
         android:id="@+id/buttonGoogle"
         android:layout_width="@dimen/width_google"
         android:layout_height="@dimen/height_google"

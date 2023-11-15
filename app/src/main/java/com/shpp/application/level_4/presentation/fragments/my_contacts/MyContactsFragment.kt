@@ -2,9 +2,12 @@ package com.shpp.application.level_4.presentation.fragments.my_contacts
 
 import android.os.Bundle
 import android.os.Parcelable
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.FragmentNavigator
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -22,16 +25,15 @@ import com.shpp.application.level_4.presentation.multiselect.ContactItem
 import com.shpp.application.level_4.presentation.fragments.viewPager_fragment.ViewPagerFragmentDirections
 import com.shpp.application.level_4.presentation.interfaces.ContactSelectionListener
 import com.shpp.application.level_4.presentation.interfaces.MyContactsAdapterListener
+import com.shpp.application.level_4.presentation.utils.extensions.invisible
+import com.shpp.application.level_4.presentation.utils.extensions.visibleIf
 import com.shpp.application.level_4.utils.Constants
 import com.shpp.application.level_4.utils.Constants.ADD_USER_TAG
-import com.shpp.application.level_4.utils.Constants.PROFILE_SCREEN
 
 class MyContactsFragment :
     BaseFragment<FragmentMyContactsBinding>(FragmentMyContactsBinding::inflate) {
 
     private val viewModel: MyContactsViewModel by viewModels()
-
-    private var itemTouchHelper: ItemTouchHelper? = null
 
     private val adapter: UsersAdapter by lazy {
         UsersAdapter(
@@ -43,7 +45,8 @@ class MyContactsFragment :
                 override fun onDeleteClick(contact: User) {
                     viewModel.deleteUser(contact)
                     showSnackBar(
-                        resources.getString(R.string.snackbar_removed), R.string.snackbar_undo
+                        getString(R.string.snackbar_removed),
+                        R.string.snackbar_undo
                     ) { viewModel.restoreLastDeletedUser() }
                 }
 
@@ -57,11 +60,7 @@ class MyContactsFragment :
 
             contactSelectionListener = object : ContactSelectionListener {
                 override fun onContactSelectionActivated() {
-                   binding.buttonMultiDelete.visibility = when (binding.buttonMultiDelete.visibility) {
-                       View.VISIBLE -> View.GONE
-                       View.GONE -> View.VISIBLE
-                       else -> {View.GONE}
-                   }
+                    binding.buttonMultiDelete.visibleIf(viewModel.isSelectionModeEnabled())
                 }
 
                 override fun isCheck(user: User): Boolean {
@@ -73,7 +72,7 @@ class MyContactsFragment :
                 }
 
                 override fun disableSelectionMode() {
-                     doDisableSelectionMode()
+                    doDisableSelectionMode()
                 }
 
                 override fun enableSelectionMode() {
@@ -115,7 +114,7 @@ class MyContactsFragment :
     }
 
     private fun addMultiDeleteListener() {
-        binding.buttonMultiDelete.setOnClickListener{
+        binding.buttonMultiDelete.setOnClickListener {
             viewModel.deleteSelectedContacts()
             doDisableSelectionMode()
         }
@@ -123,10 +122,11 @@ class MyContactsFragment :
 
     override fun onStart() {
         super.onStart()
-        viewModel.users.observe(this, Observer {
+
+        viewModel.users.observe(viewLifecycleOwner) {
             adapter.submitList(it)
             viewModel.updateContactsSelectionMode()
-        })
+        }
         selectModeObserve()
     }
 
@@ -143,43 +143,43 @@ class MyContactsFragment :
                 binding.recyclerUsers.layoutManager?.onRestoreInstanceState(recyclerState)
             }
 
-            changeEnablingTouchHelperTo(selectionMode)
+            // changeEnablingTouchHelperTo(selectionMode)
         }
     }
 
-    private fun changeEnablingTouchHelperTo(enabling: Boolean) {
-        if (enabling) {
-            itemTouchHelper?.attachToRecyclerView(null)
-        } else {
-            itemTouchHelper?.attachToRecyclerView(binding.recyclerUsers)
-        }
-    }
+//    private fun changeEnablingTouchHelperTo(enabling: Boolean) {
+//        if (enabling) {
+//            itemTouchHelper?.attachToRecyclerView(null)
+//        } else {
+//            itemTouchHelper?.attachToRecyclerView(binding.recyclerUsers)
+//        }
+//    }
 
     private fun addListenerBackToProfile() {
         binding.buttonBack.setOnClickListener {
-            (parentFragment as ViewPagerFragment).switchToPage(PROFILE_SCREEN)
+            (parentFragment as ViewPagerFragment).switchToPage(ViewPagerFragment.PagerScreens.PROFILE_SCREEN)
         }
     }
 
     private fun setupRecyclerView() {
-        with(binding.recyclerUsers) {
-            val layoutManager = LinearLayoutManager(requireContext())
-            this.layoutManager = layoutManager
-            this.adapter = this@MyContactsFragment.adapter
-            addSwipeToDelete()
+        with(binding) {
+            recyclerUsers.adapter = adapter
+            setSwipeToDelete()
         }
     }
 
-    private fun addSwipeToDelete() {
-         itemTouchHelper = ItemTouchHelper(SwipeToDeleteCallback(
+    private fun setSwipeToDelete() {
+
+        val itemTouchHelper = ItemTouchHelper(SwipeToDeleteCallback(
             onSwiped = { position ->
                 viewModel.deleteUserByPosition(position)
                 showSnackBar(
-                    "Remove!", R.string.snackbar_undo
+                    "Remove!", R.string.snackbar_undo // TODO: res
                 ) { viewModel.restoreLastDeletedUser() }
             },
+            isEnabled = { !viewModel.isSelectionModeEnabled() }
         ))
-        itemTouchHelper!!.attachToRecyclerView(binding.recyclerUsers)
+        itemTouchHelper.attachToRecyclerView(binding.recyclerUsers)
     }
 
 
@@ -204,7 +204,7 @@ class MyContactsFragment :
 
                     // if the recycler view is scrolled above hide the button
                     if (dy > 10 && buttonScroll.visibility == View.VISIBLE) {
-                        buttonScroll.visibility = View.INVISIBLE
+                        buttonScroll.invisible()
                     }
 
                     // if the recycler view is scrolled above show the button
@@ -222,12 +222,10 @@ class MyContactsFragment :
     }
 
     private fun startDetailFragment(contact: User, extras: FragmentNavigator.Extras) {
-        val direction = ViewPagerFragmentDirections.actionViewPagerFragmentToDetailsContactFragment(
-            contact.name,
-            contact.job,
-            contact.address,
-            contact.photo ?: ""
-        )
+        val direction =
+            ViewPagerFragmentDirections.actionViewPagerFragmentToDetailsContactFragment( // TODO: send model
+                contact
+            )
         findNavController().navigate(direction, extras)
     }
 }

@@ -15,6 +15,8 @@ import com.shpp.application.level_4.presentation.multiselect.ContactItem
 import com.shpp.application.level_4.presentation.interfaces.ContactSelectionListener
 import com.shpp.application.level_4.presentation.interfaces.MyContactsAdapterListener
 import com.shpp.application.level_4.presentation.utils.extensions.downloadAndPutPhoto
+import com.shpp.application.level_4.presentation.utils.extensions.gone
+import com.shpp.application.level_4.presentation.utils.extensions.visible
 import com.shpp.application.level_4.utils.Constants.TRANSACTION_PHOTO
 
 class UsersAdapter(
@@ -31,12 +33,12 @@ class UsersAdapter(
             with(binding) {
                 textName.text = user.name
                 textViewJob.text = user.job
-                buttonBasket.tag = user
+                buttonBasket.tag = user // TODO: delete
                 avatarUser.downloadAndPutPhoto(user.photo)
 
                 if (contactSelectionListener.isSelectionModeEnabled()) {
                     checkboxItem.isChecked = contactSelectionListener.isCheck(user)
-                    removeSimpleListeners()
+                    //removeSimpleListeners()
                     setMultiSelectListeners(user)
                     changeDesignForMultiSelect()
                 } else {
@@ -46,7 +48,7 @@ class UsersAdapter(
             }
         }
 
-        private fun removeSimpleListeners() {
+        private fun removeSimpleListeners() { // TODO: remove
             with(binding) {
                 if (buttonBasket.hasOnClickListeners()) {
                     buttonBasket.setOnClickListener(null)
@@ -65,9 +67,7 @@ class UsersAdapter(
                     listener.onClick(user, extras)
                 }
 
-                buttonBasket.setOnClickListener {
-                    listener.onDeleteClick(user)
-                }
+                buttonBasket.setOnClickListener { listener.onDeleteClick(user) }
 
                 root.setOnLongClickListener {
                    contactSelectionListener.enableSelectionMode()
@@ -95,8 +95,8 @@ class UsersAdapter(
 
         private fun changeDesignToSimpleState() {
             with(binding) {
-                buttonBasket.visibility = View.VISIBLE
-                checkboxItem.visibility = View.GONE
+                buttonBasket.visible()
+                checkboxItem.gone()
                 val background = ContextCompat.getDrawable(binding.root.context, R.drawable.item_border)
                 root.background = background
             }
@@ -104,7 +104,7 @@ class UsersAdapter(
 
         private fun changeDesignForMultiSelect() {
             with(binding) {
-                buttonBasket.visibility = View.GONE
+                buttonBasket.visibility = View.GONE // TODO: use ext
                 checkboxItem.visibility = View.VISIBLE
                 val background = ContextCompat.getDrawable(binding.root.context, R.drawable.item_border_select)
                 root.background = background

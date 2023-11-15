@@ -10,17 +10,9 @@
         android:label="DetailsContactFragment">
 
         <argument
-            android:name="name"
-            app:argType="string" />
-        <argument
-            android:name="career"
-            app:argType="string" />
-        <argument
-            android:name="address"
-            app:argType="string" />
-        <argument
-            android:name="photoAddress"
-            app:argType="string" />
+            android:name="contact"
+            app:argType="com.shpp.application.level_4.data.model.User"
+            />
         <action
             android:id="@+id/action_detailsContactFragment_to_viewPagerFragment"
             app:destination="@id/viewPagerFragment"

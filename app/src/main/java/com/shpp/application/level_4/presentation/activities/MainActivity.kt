@@ -13,4 +13,4 @@ import com.shpp.application.databinding.MyContactsActivityBinding
  * MainActivity.kt
  * @author Pavlo Kokhanevych
  */
-class MainActivity : AppCompatActivity(R.layout.activity_main) {}
+class MainActivity : AppCompatActivity(R.layout.activity_main)

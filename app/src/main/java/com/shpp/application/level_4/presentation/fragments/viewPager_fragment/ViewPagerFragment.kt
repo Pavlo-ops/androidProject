@@ -10,13 +10,11 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.shpp.application.R
 import com.shpp.application.databinding.FragmentViewpagerBinding
 import com.shpp.application.level_4.presentation.fragments.viewPager_fragment.adapter.ViewPagerAdapter
-import com.shpp.application.level_4.utils.Constants.MY_CONTACTS_SCREEN
-import com.shpp.application.level_4.utils.Constants.PROFILE_SCREEN
 
-class ViewPagerFragment: Fragment() {
+class ViewPagerFragment : Fragment() {
 
     private val binding: FragmentViewpagerBinding by lazy {
-        FragmentViewpagerBinding .inflate(layoutInflater)
+        FragmentViewpagerBinding.inflate(layoutInflater)
     }
 
     @SuppressLint("ResourceType")
@@ -25,22 +23,26 @@ class ViewPagerFragment: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding.viewPager.adapter = ViewPagerAdapter(this@ViewPagerFragment)
+        binding.viewPager.adapter = ViewPagerAdapter(this)
         attachTabLayout()
         return binding.root
     }
 
     private fun attachTabLayout() {
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
-            tab.text = when(position) {
-                PROFILE_SCREEN -> resources.getString(R.string.profile_screen)
-                MY_CONTACTS_SCREEN -> resources.getString(R.string.my_contacts_screen)
-                else -> throw IllegalStateException(resources.getString(R.string.unknown_fragment))
+            tab.text = when (PagerScreens.entries[position]) {
+                PagerScreens.PROFILE_SCREEN -> getString(R.string.profile_screen)
+                PagerScreens.MY_CONTACTS_SCREEN -> getString(R.string.my_contacts_screen)
             }
         }.attach()
     }
 
-    fun switchToPage(position: Int) {
-        binding.viewPager.currentItem = position
+    fun switchToPage(screen: PagerScreens) {
+        binding.viewPager.currentItem = screen.ordinal
+    }
+
+    enum class PagerScreens {
+        PROFILE_SCREEN,
+        MY_CONTACTS_SCREEN
     }
 }

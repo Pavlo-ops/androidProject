@@ -3,13 +3,15 @@ package com.shpp.application.level_4.presentation.fragments
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.viewModels
 import com.shpp.application.databinding.FragmentMyProfileBinding
 import com.shpp.application.level_4.App
 import com.shpp.application.level_4.presentation.activities.AuthActivity
 import com.shpp.application.level_4.presentation.fragments.viewPager_fragment.ViewPagerFragment
-import com.shpp.application.level_4.utils.Constants.MY_CONTACTS_SCREEN
 
 class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(FragmentMyProfileBinding::inflate) {
+
+    private val viewModel: MyProfileViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -19,26 +21,15 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(FragmentMyProfi
     private fun changeTextNameView() {
         val email = App.email
         if (email != null) {
-            binding.textName.text = parseEmail(email)
+            binding.textName.text = viewModel.getNameByEmail(email)
         }
     }
 
-    private fun parseEmail(email: String): CharSequence {
-        val fullName = StringBuilder(email.substring(0, email.indexOf("@")))
-        fullName[0] = fullName[0].uppercaseChar()
-
-        if (fullName.indexOf('.') != -1) {
-            fullName[fullName.indexOf('.')] = ' '
-            fullName[fullName.indexOf(' ') + 1] = fullName[fullName.indexOf(' ') + 1].uppercaseChar()
-        }
-
-        return fullName
-    }
 
     override fun setListeners() {
         binding.buttonLogOut.setOnClickListener { startAuthActivity() }
         binding.buttonViewContact.setOnClickListener {
-            (parentFragment as ViewPagerFragment).switchToPage(MY_CONTACTS_SCREEN)
+            (parentFragment as ViewPagerFragment).switchToPage(ViewPagerFragment.PagerScreens.MY_CONTACTS_SCREEN)
         }
     }
 

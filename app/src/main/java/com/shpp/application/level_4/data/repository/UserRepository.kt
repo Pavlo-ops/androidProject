@@ -52,7 +52,7 @@ class UserRepository {
     }
 
     fun restoreLastDeletedUser() {
-        lastDeletedUser?.let {user ->
+        lastDeletedUser?.let { user ->
             addUser(user.first, user.second)
             lastDeletedUser = null
         }
@@ -76,7 +76,7 @@ class UserRepository {
         _users.value?.let { currentList ->
             _users.value =
                 currentList.toMutableList().apply {
-                    index?.let{ nonNullIndex ->
+                    index?.let { nonNullIndex ->
                         add(nonNullIndex, user)
                     } ?: add(user)
                 }
@@ -84,10 +84,10 @@ class UserRepository {
     }
 
     fun deleteSelectedItems(contactItems: List<ContactItem>?) {
-         _users.value = _users.value?.filter { user ->
-             contactItems != null &&
-                     user.id == (contactItems.find { it.id == user.id && !it.isChecked }?.id ?: -1)
-         }
+        if (contactItems == null) return
+        _users.value = _users.value?.filter { user ->
+            user.id == (contactItems.find { it.id == user.id && !it.isChecked }?.id ?: -1)
+        }
     }
 
     companion object {

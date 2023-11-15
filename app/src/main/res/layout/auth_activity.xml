@@ -45,6 +45,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/labelBottomTitle" />
 
+    <!-- todo: android:maxLength="" -->
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/editEmail"
         android:layout_width="0dp"
@@ -54,6 +55,7 @@
         android:layout_marginEnd="@dimen/normal_margin"
         android:autofillHints="emailAddress"
         android:backgroundTint="@color/greyAuth"
+
         android:fontFamily="@font/opensans_semibold"
         android:inputType="textEmailAddress"
         android:labelFor="@id/labelEmail"
@@ -114,7 +116,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/editPassword" />
 
-    <com.shpp.application.level_4.presentation.utils.extensions.custom_views.ButtonGoogleView
+    <com.shpp.application.level_4.presentation.utils.custom_views.ButtonGoogleView
         android:id="@+id/buttonGoogle"
         android:layout_width="@dimen/width_google"
         android:layout_height="@dimen/height_google"

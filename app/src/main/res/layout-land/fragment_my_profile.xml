@@ -55,7 +55,7 @@
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/avatar"
-        android:layout_width="@dimen/margin_top_title"
+        android:layout_width="@dimen/photo_size_height"
         android:layout_height="@dimen/photo_size_height"
         android:src="@mipmap/ic_avatar"
         app:layout_constraintStart_toEndOf="@id/textTitle"

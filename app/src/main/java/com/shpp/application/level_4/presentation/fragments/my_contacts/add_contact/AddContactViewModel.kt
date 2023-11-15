@@ -11,10 +11,7 @@ class AddContactViewModel: ViewModel() {
     private val usersService: UserRepository = App.userRepository
     val users: LiveData<List<User>> = usersService.users
 
-    fun addUser(
-        user: User,
-        index: Int? = null
-    ) {
+    fun addUser(user: User, index: Int? = null) {
         usersService.addUser(user, index)
     }
 }

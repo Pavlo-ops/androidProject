@@ -15,8 +15,7 @@ object Constants {
     const val MIN_LENGTH_PASSWORD: Int = 7
 
     /** Index the fragment in viewPager */
-    const val PROFILE_SCREEN = 0;
-    const val MY_CONTACTS_SCREEN = 1;
+
 
     /**  Period of time for undo delete. */
     const val MILLIS_DURATION: Int = 5000

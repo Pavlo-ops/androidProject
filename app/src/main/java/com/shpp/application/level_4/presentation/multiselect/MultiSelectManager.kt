@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.shpp.application.level_4.data.model.User
 
 class MultiSelectManager(
-    private val users: List<User>?
+    users: List<User>?
 ) {
     private val _contactsLiveData = MutableLiveData<List<ContactItem>>()
     val contactsLiveData: LiveData<List<ContactItem>> get() = _contactsLiveData

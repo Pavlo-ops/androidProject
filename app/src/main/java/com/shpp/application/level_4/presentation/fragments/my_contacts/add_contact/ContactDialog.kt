@@ -22,34 +22,40 @@ import com.shpp.application.level_4.presentation.utils.extensions.downloadAndPut
 class ContactDialog : DialogFragment() {
 
     private val addContactViewModel: AddContactViewModel by viewModels()
-    private lateinit var bindingAdd: AddUserDialogBinding
+    private val bindingAdd: AddUserDialogBinding by lazy {
+        AddUserDialogBinding.inflate(layoutInflater)
+    }
 
     private var urlAvatar: String = ""
 
-    private lateinit var resultLauncher: ActivityResultLauncher<Intent>
+    private val resultLauncher: ActivityResultLauncher<Intent> =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { resultForActivity ->
+            downloadImage(resultForActivity)
+        }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         super.onCreateDialog(savedInstanceState)
         val builder = AlertDialog.Builder(requireContext())
-        bindingAdd = AddUserDialogBinding.inflate(layoutInflater)
         builder.setView(bindingAdd.root)
-        initializeResultLauncher()
+        //initializeResultLauncher()
         setListeners()
         return builder.create()
     }
 
     private fun setListeners() {
-        addButtonPhotoListener()
+        with(bindingAdd) {
+            buttonAddPhoto.setOnClickListener { openPhotoList() }
+            buttonSave.setOnClickListener { addNewUser() }
+        }
         addBaselineListener()
-        bindingAdd.buttonSave.setOnClickListener { addNewUser() }
     }
 
-    private fun addButtonPhotoListener() {
-        bindingAdd.buttonAddPhoto.setOnClickListener {
-            val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-            resultLauncher.launch(intent)
-        }
+    private fun openPhotoList() {
+
+        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        resultLauncher.launch(intent)
     }
+
 
     private fun addBaselineListener() {
         bindingAdd.buttonBack.setOnClickListener {
@@ -75,10 +81,8 @@ class ContactDialog : DialogFragment() {
     }
 
     private fun initializeResultLauncher() {
-        resultLauncher =
-            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { resultForActivity ->
-                downloadImage(resultForActivity)
-            }
+        // resultLauncher =
+
     }
 
     private fun downloadImage(result: androidx.activity.result.ActivityResult) {
